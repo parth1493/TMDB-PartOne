@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.tmdb_partone.R
-import kotlinx.android.synthetic.main.fragment_launcher.*
+import com.example.tmdb_partone.databinding.FragmentLauncherBinding
 
 
 class LauncherFragment : Fragment() {
+    private var fragmentFirstBinding: FragmentLauncherBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,22 +20,23 @@ class LauncherFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_launcher, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val binding = FragmentLauncherBinding.bind(view)
+        fragmentFirstBinding = binding
 
-        register.setOnClickListener {
+        binding.register.setOnClickListener {
             navRegistration()
         }
 
-        login.setOnClickListener {
+        binding.login.setOnClickListener {
             navLogin()
         }
 
-        forgot_password.setOnClickListener {
-            navForgotPassword()
-        }
+        binding.forgotPassword.setOnClickListener { navForgotPassword() }
 
-        focusable_view.requestFocus() // reset focus
+        binding.focusableView.requestFocus()
     }
 
     fun navLogin(){

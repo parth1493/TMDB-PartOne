@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView
+
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,8 +9,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.auth.LauncherFragment"
     android:fillViewport="true"
-    android:background="#fff"
-    >
+android:background="#fff">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

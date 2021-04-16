@@ -1,10 +1,12 @@
 package com.example.tmdb_partone.models
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName ="account_properties")
 data class AccountProperties(
     @SerializedName("pk")
     @Expose
@@ -14,13 +16,11 @@ data class AccountProperties(
 
     @SerializedName("email")
     @Expose
-    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name ="email")
     var email: String,
 
     @SerializedName("username")
     @Expose
-    @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name ="username")
     var usetname: String,
 
