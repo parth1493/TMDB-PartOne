@@ -1,6 +1,7 @@
 package com.example.tmdb_partone.ui.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ForgotPasswordFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ForgotPasswordFragment : Fragment() {
+class ForgotPasswordFragment : BaseAuthFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,4 +28,8 @@ class ForgotPasswordFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_forgot_password, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG,"ForgotPasswordFragment: ${viewModel.hashCode()}")
+    }
 }
