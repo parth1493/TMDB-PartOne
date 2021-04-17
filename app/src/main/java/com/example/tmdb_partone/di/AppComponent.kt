@@ -2,7 +2,6 @@ package com.example.tmdb_partone.di
 
 import android.app.Application
 import com.example.tmdb_partone.BaseApplication
-import com.example.tmdb_partone.di.auth.ActivityBuildersModule
 import com.example.tmdb_partone.session.SessionManager
 import dagger.BindsInstance
 import dagger.Component

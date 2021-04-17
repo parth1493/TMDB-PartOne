@@ -12,8 +12,10 @@ import com.example.tmdb_partone.databinding.FragmentLauncherBinding
 
 
 class LauncherFragment : BaseAuthFragment() {
-    private var fragmentFirstBinding: FragmentLauncherBinding? = null
 
+    private var _binding: FragmentLauncherBinding? = null
+
+    private val binding get() = _binding!!
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,10 +26,10 @@ class LauncherFragment : BaseAuthFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = FragmentLauncherBinding.bind(view)
+        _binding = FragmentLauncherBinding.bind(view)
 
         Log.d(TAG,"LauncherFragment: ${viewModel.hashCode()}")
-        fragmentFirstBinding = binding
+
 
         binding.register.setOnClickListener {
             navRegistration()

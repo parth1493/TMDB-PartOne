@@ -8,7 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.tmdb_partone.R
-import com.example.tmdb_partone.util.GenericApiResponse
+import com.example.tmdb_partone.databinding.FragmentRegisterBinding
+import com.example.tmdb_partone.ui.auth.state.RegistrationFields
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +23,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class RegisterFragment : BaseAuthFragment() {
 
+    private var _binding: FragmentRegisterBinding? = null
+
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,19 +39,31 @@ class RegisterFragment : BaseAuthFragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG,"RegisterFragment: ${viewModel.hashCode()}")
 
-        viewModel.testRegister().observe(viewLifecycleOwner, Observer { response ->
+        _binding = FragmentRegisterBinding.bind(view)
 
-            when(response){
-                is GenericApiResponse.ApiSuccessResponse ->{
-                    Log.d(TAG, "REGISTER RESPONSE: ${response.body}")
-                }
-                is GenericApiResponse.ApiErrorResponse ->{
-                    Log.d(TAG, "REGISTER RESPONSE: ${response.errorMessage}")
-                }
-                is GenericApiResponse.ApiEmptyResponse ->{
-                    Log.d(TAG, "REGISTER RESPONSE: Empty Response")
-                }
+        subscribeObservers()
+    }
+
+    fun subscribeObservers(){
+        viewModel.viewState.observe(viewLifecycleOwner, Observer{viewState ->
+            viewState.registrationFields?.let {
+                it.registration_email?.let{binding.inputEmail.setText(it)}
+                it.registration_username?.let{binding.inputUsername.setText(it)}
+                it.registration_password?.let{binding.inputPassword.setText(it)}
+                it.registration_confirm_password?.let{binding.inputPasswordConfirm.setText(it)}
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setRegistrationFields(
+            RegistrationFields(
+                binding.inputEmail.text.toString(),
+                binding.inputUsername.text.toString(),
+                binding.inputPassword.text.toString(),
+                binding.inputPasswordConfirm.text.toString()
+            )
+        )
     }
 }

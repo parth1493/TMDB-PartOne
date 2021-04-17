@@ -8,12 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.tmdb_partone.R
-import com.example.tmdb_partone.util.GenericApiResponse
+import com.example.tmdb_partone.databinding.FragmentLoginBinding
+import com.example.tmdb_partone.models.AuthToken
+import com.example.tmdb_partone.ui.auth.state.LoginFields
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -21,6 +19,10 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class LoginFragment : BaseAuthFragment() {
+
+    private var _binding: FragmentLoginBinding? = null
+
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,20 +35,35 @@ class LoginFragment : BaseAuthFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d(TAG,"LoginFragment: ${viewModel.hashCode()}")
+        _binding = FragmentLoginBinding.bind(view)
 
-        viewModel.testLogin().observe(viewLifecycleOwner, Observer { response ->
+        _binding!!.loginButton.setOnClickListener {
+            viewModel.setAuthToken(
+                AuthToken(
+                    1,
+                    "gdfngidfng4nt43n43jn34jn"
+                )
+            )
+        }
+        subscribeObservers()
+    }
 
-            when(response){
-                is GenericApiResponse.ApiSuccessResponse ->{
-                    Log.d(TAG, "LOGIN RESPONSE: ${response.body}")
-                }
-                is GenericApiResponse.ApiErrorResponse ->{
-                    Log.d(TAG, "LOGIN RESPONSE: ${response.errorMessage}")
-                }
-                is GenericApiResponse.ApiEmptyResponse ->{
-                    Log.d(TAG, "LOGIN RESPONSE: Empty Response")
-                }
+    fun subscribeObservers(){
+        viewModel.viewState.observe(viewLifecycleOwner, Observer{
+            it.loginFields?.let{
+                it.login_email?.let{binding.inputEmail.setText(it)}
+                it.login_password?.let{binding.inputPassword.setText(it)}
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.setLoginFields(
+            LoginFields(
+                binding.inputEmail.text.toString(),
+                binding.inputPassword.text.toString()
+            )
+        )
     }
 }

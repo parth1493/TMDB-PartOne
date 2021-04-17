@@ -66,4 +66,10 @@
     <string name="are_you_sure_delete">Are you sure you want to delete this? This can\'t be un-done.</string>
     <string name="text_info">Info</string>
     <string name="delete">Delete</string>
+    <string name="title_activity_main">MainActivity</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>
