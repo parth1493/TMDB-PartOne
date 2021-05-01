@@ -1,5 +1,7 @@
 package com.example.tmdb_partone.ui.auth.state
 
+import android.content.Context
+
 sealed class AuthStateEvent{
 
     data class LoginAttemptEvent(

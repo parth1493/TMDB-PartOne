@@ -3,17 +3,17 @@ package com.example.tmdb_partone.ui.auth.state
 import com.example.tmdb_partone.models.AuthToken
 
 data class AuthViewState(
-    var registrationFields: RegistrationFields? = RegistrationFields(),
-    var loginFields: LoginFields? = LoginFields(),
-    var authToken: AuthToken? = null
+        var registrationFields: RegistrationFields? = RegistrationFields(),
+        var loginFields: LoginFields? = LoginFields(),
+        var authToken: AuthToken? = null
 )
 
 
 data class RegistrationFields(
-    var registration_email: String? = null,
-    var registration_username: String? = null,
-    var registration_password: String? = null,
-    var registration_confirm_password: String? = null
+        var registration_email: String? = null,
+        var registration_username: String? = null,
+        var registration_password: String? = null,
+        var registration_confirm_password: String? = null
 ){
 
     class RegistrationError {
@@ -36,9 +36,9 @@ data class RegistrationFields(
 
     fun isValidForRegistration(): String{
         if(registration_email.isNullOrEmpty()
-            || registration_username.isNullOrEmpty()
-            || registration_password.isNullOrEmpty()
-            || registration_confirm_password.isNullOrEmpty()){
+                || registration_username.isNullOrEmpty()
+                || registration_password.isNullOrEmpty()
+                || registration_confirm_password.isNullOrEmpty()){
             return RegistrationError.mustFillAllFields()
         }
 
@@ -50,8 +50,8 @@ data class RegistrationFields(
 }
 
 data class LoginFields(
-    var login_email: String? = null,
-    var login_password: String? = null
+        var login_email: String? = null,
+        var login_password: String? = null
 ){
     class LoginError {
 
@@ -70,7 +70,7 @@ data class LoginFields(
     fun isValidForLogin(): String{
 
         if(login_email.isNullOrEmpty()
-            || login_password.isNullOrEmpty()){
+                || login_password.isNullOrEmpty()){
 
             return LoginError.mustFillAllFields()
         }

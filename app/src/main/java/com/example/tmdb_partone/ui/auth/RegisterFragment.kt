@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.example.tmdb_partone.R
 import com.example.tmdb_partone.databinding.FragmentRegisterBinding
+import com.example.tmdb_partone.ui.auth.state.AuthStateEvent
 import com.example.tmdb_partone.ui.auth.state.RegistrationFields
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,7 +41,9 @@ class RegisterFragment : BaseAuthFragment() {
         Log.d(TAG,"RegisterFragment: ${viewModel.hashCode()}")
 
         _binding = FragmentRegisterBinding.bind(view)
-
+        binding.registerButton.setOnClickListener{
+            register()
+        }
         subscribeObservers()
     }
 
@@ -64,6 +67,17 @@ class RegisterFragment : BaseAuthFragment() {
                 binding.inputPassword.text.toString(),
                 binding.inputPasswordConfirm.text.toString()
             )
+        )
+    }
+
+    fun register(){
+        viewModel.setStateEvent(
+                AuthStateEvent.RegisterAttemptEvent(
+                        binding.inputEmail.text.toString(),
+                        binding.inputUsername.text.toString(),
+                        binding.inputPassword.text.toString(),
+                        binding.inputPasswordConfirm.text.toString()
+                )
         )
     }
 }

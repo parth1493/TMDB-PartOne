@@ -12,6 +12,7 @@ import com.example.tmdb_partone.ui.auth.state.RegistrationFields
 import com.example.tmdb_partone.util.AbsentLiveData
 import javax.inject.Inject
 
+
 class AuthViewModel
 @Inject
 constructor(
@@ -22,11 +23,18 @@ constructor(
         when(stateEvent){
 
             is AuthStateEvent.LoginAttemptEvent -> {
-                return AbsentLiveData.create()
+                return authRepository.attemptLogin(
+                    stateEvent.email,
+                    stateEvent.password)
             }
 
             is AuthStateEvent.RegisterAttemptEvent -> {
-                return AbsentLiveData.create()
+                return authRepository.attemptRegistration(
+                        stateEvent.email,
+                        stateEvent.username,
+                        stateEvent.password,
+                        stateEvent.confirm_password
+                )
             }
 
             is AuthStateEvent.CheckPreviousAuthEvent -> {
@@ -64,5 +72,14 @@ constructor(
         }
         update.authToken = authToken
         _viewState.value = update
+    }
+
+    fun cancelActiveJobs(){
+        authRepository.cancelActiveJobs()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        cancelActiveJobs()
     }
 }

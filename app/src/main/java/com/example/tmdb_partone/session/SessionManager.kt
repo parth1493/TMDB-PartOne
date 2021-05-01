@@ -3,9 +3,12 @@ package com.example.tmdb_partone.session
 import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.ConnectivityManager.NetworkCallback
+import android.net.Network
 import android.net.NetworkCapabilities
-import android.os.Build
+import android.net.NetworkRequest
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.tmdb_partone.models.AuthToken
@@ -24,8 +27,8 @@ import javax.inject.Singleton
 class SessionManager
 @Inject
 constructor(
-    val authTokenDao: AuthTokenDao,
-    val application: Application
+        val authTokenDao: AuthTokenDao,
+        val application: Application
 ) {
 
     private val TAG: String = "AppDebug"
@@ -74,37 +77,19 @@ constructor(
         }
     }
 
-    fun isConnectedToTheInternet(context: Context): Boolean{
-        if(context == null)  return false;
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-            if (capabilities != null) {
-                when {
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> {
-                        return true;
-                    }
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> {
-                        return true;
-                    }
-                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> {
-                        return true;
-                    }
-                }
-            }
+    fun isConnectedToTheInternet(): Boolean{
+
+        val connectivityManager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val activeNetwork = connectivityManager.activeNetwork
+
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
+        if(networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)){
+            Log.d("AppDebug","True")
         }else{
-            try {
-                val activeNetworkInfo = connectivityManager.activeNetworkInfo
-                if (activeNetworkInfo != null && activeNetworkInfo.isConnected) {
-                    Log.i("update_statut", "Network is available : true")
-                    return true
-                }
-            } catch (e: java.lang.Exception) {
-                Log.i("update_statut", "" + e.message)
-            }
+            Log.d("AppDebug","false")
         }
-        Log.i("update_statut","Network is available : FALSE ");
-        return false;
+        return networkCapabilities != null &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 }

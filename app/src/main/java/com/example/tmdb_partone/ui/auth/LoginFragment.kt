@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.example.tmdb_partone.R
 import com.example.tmdb_partone.databinding.FragmentLoginBinding
 import com.example.tmdb_partone.models.AuthToken
+import com.example.tmdb_partone.ui.auth.state.AuthStateEvent
 import com.example.tmdb_partone.ui.auth.state.LoginFields
 
 
@@ -37,13 +38,8 @@ class LoginFragment : BaseAuthFragment() {
         Log.d(TAG,"LoginFragment: ${viewModel.hashCode()}")
         _binding = FragmentLoginBinding.bind(view)
 
-        _binding!!.loginButton.setOnClickListener {
-            viewModel.setAuthToken(
-                AuthToken(
-                    1,
-                    "gdfngidfng4nt43n43jn34jn"
-                )
-            )
+        binding.loginButton.setOnClickListener {
+            login()
         }
         subscribeObservers()
     }
@@ -66,4 +62,15 @@ class LoginFragment : BaseAuthFragment() {
             )
         )
     }
+
+    fun login(){
+        Log.d(TAG,"Auth Enter : ${binding.inputEmail.text}")
+        viewModel.setStateEvent(
+                AuthStateEvent.LoginAttemptEvent(
+                    binding.inputEmail.text.toString(),
+                    binding.inputPassword.text.toString()
+                )
+        )
+    }
+
 }

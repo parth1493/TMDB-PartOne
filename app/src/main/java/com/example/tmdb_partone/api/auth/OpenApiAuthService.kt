@@ -20,10 +20,10 @@ interface OpenApiAuthService {
     @POST("account/register")
     @FormUrlEncoded
     fun register(
-        @Field("email") email: String,
-        @Field("username") username: String,
-        @Field("password") password: String,
-        @Field("password2") password2: String
+            @Field("email") email: String,
+            @Field("username") username: String,
+            @Field("password") password: String,
+            @Field("password2") password2: String
     ): LiveData<GenericApiResponse<RegistrationResponse>>
 
 }
